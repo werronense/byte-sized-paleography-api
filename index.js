@@ -5,7 +5,7 @@ require("dotenv").config();
 
 // import routers
 const registerRouter = require("./routes/register-routes");
-const loginRouter = require("./routes/login-router");
+const loginRouter = require("./routes/login-routes");
 const profileRouter = require("./routes/profile-routes");
 
 const { PORT } = process.env;
