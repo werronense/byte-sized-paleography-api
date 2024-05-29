@@ -6,6 +6,7 @@ require("dotenv").config();
 // import routers
 const registerRouter = require("./routes/register-routes");
 const loginRouter = require("./routes/login-router");
+const profileRouter = require("./routes/profile-routes");
 
 const { PORT } = process.env;
 
@@ -16,6 +17,7 @@ app.use(cors());
 // routing
 app.use("/api/register", registerRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/profile", profileRouter);
 
 app.listen(PORT, () => {
   console.log(`App listening on http://localhost:${PORT}`);
