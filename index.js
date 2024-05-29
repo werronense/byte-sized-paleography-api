@@ -15,6 +15,7 @@ const userRouter = require("./routes/user-routes");
 // middleware
 app.use(express.json());
 app.use(cors());
+app.use(express.static("public"));
 
 // routing
 app.use("/api/register", registerRouter);
