@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 require("dotenv").config();
 
 // import routers
@@ -7,6 +8,8 @@ require("dotenv").config();
 const { PORT } = process.env;
 
 // middleware
+app.use(express.json());
+app.use(cors());
 
 // routing
 
