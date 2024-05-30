@@ -31,6 +31,6 @@ PUT /api/user/:id
 
 - Response: 200, `{ username, score }`
 
-DELETE /api/user/:id
+DELETE /api/users/:id
 
 - Response: 204

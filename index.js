@@ -22,7 +22,7 @@ app.use("/api/register", registerRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/text", textRouter);
-app.use("/api/user", userRouter);
+app.use("/api/users", userRouter);
 
 app.listen(PORT, () => {
   console.log(`App listening on http://localhost:${PORT}`);
