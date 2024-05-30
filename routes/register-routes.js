@@ -8,15 +8,30 @@ const getUserByUsername = async (username) => {
 };
 
 // to validate input
-const validateNewUser = (req, res, next) => {
-  const user = getUserByUsername(req.body.username);
+const validateUserInput = (req, res, next) => {
+  const requiredFields = ["user_name", "email", "password"];
+  const inputFields = Object.keys(req.body);
+  const inputValues = Object.values(req.body);
 
+  const fieldsMissing = requiredFields
+    .map((value) => inputFields.includes(value))
+    .includes(false);
+  const valuesMissing = inputValues.map((value) => !!value).includes(false);
+
+  // check all required fields submitted and no fields are blank
+  if (fieldsMissing || valuesMissing) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  // todo: check email is valid
+
+  const user = getUserByUsername(req.body.user_name);
   // todo: reject request if username already exists
 
   next();
 };
 
-router.post("/", validateNewUser, (req, res) => {
+router.post("/", validateUserInput, (req, res) => {
   // todo: add 201 response with json { success: true }
   // placeholder response
   res.send("Reached endpoint POST /api/register");
