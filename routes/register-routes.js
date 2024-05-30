@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const knex = require("knex")(require("../knexfile"));
+const { isEmail } = require("validator");
 
 // check if username is already taken
 const getUserByUsername = async (username) => {
@@ -23,10 +24,17 @@ const validateUserInput = (req, res, next) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  // todo: check email is valid
+  // check email is valid
+  if (!isEmail(req.body.email)) {
+    return res.status(400).json({ error: "Invalid email address" });
+  }
 
+  // reject request if username already exists
   const user = getUserByUsername(req.body.user_name);
-  // todo: reject request if username already exists
+
+  if (user) {
+    return res.status(400).json({ error: "Username already taken" });
+  }
 
   next();
 };
