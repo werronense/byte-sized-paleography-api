@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const knex = require("knex")(require("../knexfile"));
+const bcrypt = require("bcrypt");
 const { isEmail } = require("validator");
 
 // check if username is already taken
@@ -40,21 +41,24 @@ const validateUserInput = async (req, res, next) => {
 };
 
 router.post("/", validateUserInput, async (req, res) => {
-  const newUser = {
-    user_name: req.body.username,
-    email: req.body.email,
-    password: req.body.password,
-  };
+  bcrypt.hash(req.body.password, 12, async (err, hash) => {
+    const newUser = {
+      user_name: req.body.username,
+      email: req.body.email,
+    };
 
-  try {
-    // (insertion returns an array of new ids)
-    await knex("users").insert(newUser);
+    try {
+      newUser.password = hash;
+      
+      // (insertion returns an array of new ids)
+      await knex("users").insert(newUser);
     
-    res.status(201).json({ success: true });
-  } catch (err) {
-    console.error("Internal server error: ", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
+      res.status(201).json({ success: true });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
 });
 
 module.exports = router;
