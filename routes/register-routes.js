@@ -9,7 +9,7 @@ const getUserByUsername = async (username) => {
 };
 
 // to validate input
-const validateUserInput = (req, res, next) => {
+const validateUserInput = async (req, res, next) => {
   const requiredFields = ["user_name", "email", "password"];
   const inputFields = Object.keys(req.body);
   const inputValues = Object.values(req.body);
@@ -30,7 +30,7 @@ const validateUserInput = (req, res, next) => {
   }
 
   // reject request if username already exists
-  const user = getUserByUsername(req.body.user_name);
+  const user = await getUserByUsername(req.body.user_name);
 
   if (user) {
     return res.status(400).json({ error: "Username already taken" });
