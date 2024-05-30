@@ -10,7 +10,7 @@ const getUserByUsername = async (username) => {
 
 // to validate input
 const validateUserInput = async (req, res, next) => {
-  const requiredFields = ["user_name", "email", "password"];
+  const requiredFields = ["username", "email", "password"];
   const inputFields = Object.keys(req.body);
   const inputValues = Object.values(req.body);
 
@@ -30,7 +30,7 @@ const validateUserInput = async (req, res, next) => {
   }
 
   // reject request if username already exists
-  const user = await getUserByUsername(req.body.user_name);
+  const user = await getUserByUsername(req.body.username);
 
   if (user) {
     return res.status(400).json({ error: "Username already taken" });
@@ -39,10 +39,22 @@ const validateUserInput = async (req, res, next) => {
   next();
 };
 
-router.post("/", validateUserInput, (req, res) => {
-  // todo: add 201 response with json { success: true }
-  // placeholder response
-  res.send("Reached endpoint POST /api/register");
+router.post("/", validateUserInput, async (req, res) => {
+  const newUser = {
+    user_name: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+  };
+
+  try {
+    // (insertion returns an array of new ids)
+    await knex("users").insert(newUser);
+    
+    res.status(201).json({ success: true });
+  } catch (err) {
+    console.error("Internal server error: ", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 module.exports = router;
