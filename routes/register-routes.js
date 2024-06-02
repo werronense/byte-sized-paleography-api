@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { isEmail } = require("validator");
 
 // check if username is already taken
+// todo: refactor to utils
 const getUserByUsername = async (username) => {
   const response = await knex("users").where({ user_name: username }).first();
   return response;
