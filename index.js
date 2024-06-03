@@ -11,6 +11,7 @@ const loginRouter = require("./routes/login-routes");
 const profileRouter = require("./routes/profile-routes");
 const textRouter = require("./routes/text-routes");
 const userRouter = require("./routes/user-routes");
+const leaderboardRouter = require("./routes/leaderboard-routes");
 
 // middleware
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use("/api/login", loginRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/text", textRouter);
 app.use("/api/users", userRouter);
+app.use("/api/leaderboard", leaderboardRouter);
 
 app.listen(PORT, () => {
   console.log(`App listening on http://localhost:${PORT}`);
