@@ -15,6 +15,7 @@ const isUserAuthenticated = async (req, res, next) => {
   }
 
   const user = await getUserByUsername(username);
+  if (!user) return res.status(401).json({ error: "Username not found" });
 
   try {
     const match = await bcrypt.compare(password, user.password);
