@@ -1,17 +1,10 @@
 const router = require("express").Router();
-const knex = require("knex")(require("../knexfile"));
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const getUserByUsername = require("../utils/get-user-by-username");
 require("dotenv").config();
 
 const { SECRET_KEY } = process.env;
-
-// helper function
-// todo: refactor to utils
-const getUserByUsername = async (username) => {
-  const response = await knex("users").where({ user_name: username }).first();
-  return response;
-};
 
 // middleware function to authenticate username and password
 const isUserAuthenticated = async (req, res, next) => {
