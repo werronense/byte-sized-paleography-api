@@ -1,15 +1,10 @@
 const router = require("express").Router();
 const knex = require("knex")(require("../knexfile"));
 const bcrypt = require("bcrypt");
+const getUserByUsername = require("../utils/get-user-by-username");
 const { isEmail } = require("validator");
 
-// check if username is already taken
-const getUserByUsername = async (username) => {
-  const response = await knex("users").where({ user_name: username }).first();
-  return response;
-};
-
-// to validate input
+// middleware function to validate input
 const validateUserInput = async (req, res, next) => {
   const requiredFields = ["username", "email", "password"];
   const inputFields = Object.keys(req.body);
