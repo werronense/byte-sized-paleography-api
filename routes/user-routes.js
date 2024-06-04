@@ -89,7 +89,8 @@ router.patch("/score", authorizeUser, async (req, res) => {
   }
 
   try {
-    const oldScore = (await knex("users").select("score").where({ id }).first()).score;
+    const oldScore = (await knex("users").select("score").where({ id }).first())
+      .score;
 
     const newTotal = Number(oldScore) + Number(score);
 
@@ -101,12 +102,19 @@ router.patch("/score", authorizeUser, async (req, res) => {
   }
 });
 
-// DELETE /api/users/:id
-router.delete("/:id", (req, res) => {
-  // todo: for authorized user, delete profile
-  // todo: after successful delete, send response 204 (no content)
-  // placeholder response
-  res.send("Endpoint reached DELETE /api/users/:id");
+// DELETE /api/users/
+router.delete("/", authorizeUser, async (req, res) => {
+  const { id } = req.user;
+
+  try {
+    await knex("users").where({ id }).delete();
+
+    // after successful delete, send response 204 (no content)
+    res.sendStatus(204)
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 module.exports = router;
