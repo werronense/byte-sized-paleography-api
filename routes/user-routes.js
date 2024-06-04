@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const knex = require("knex")(require("../knexfile"));
+const bcrypt = require("bcrypt");
 const getUserByUsername = require("../utils/get-user-by-username");
 const authorizeUser = require("../utils/authorize-user");
 
@@ -58,13 +59,24 @@ router.patch("/email", authorizeUser, async (req, res) => {
 // PATCH /api/users/password
 router.patch("/password", authorizeUser, async (req, res) => {
   const { id } = req.user;
-  console.log(id);
+  const { password } = req.body;
 
-  // todo: for authorized user, update requested field
-  // todo: after successful update, send response 200, { message }
+  // reject requests without required field
+  if (!password) {
+    return res.status(400).json({ error: "Missing required field" });
+  }
 
-  // placeholder response
-  res.send("Endpoint reached PATCH /api/users/password");
+  // encrypt password before storing in database
+  bcrypt.hash(password, 12, async (err, hash) => {
+    try {
+      await knex("users").where({ id }).update({ password: hash });
+
+      res.status(201).json({ message: "Password updated!" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
 });
 
 // PATCH /api/users/score
