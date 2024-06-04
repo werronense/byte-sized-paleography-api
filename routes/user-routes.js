@@ -82,13 +82,23 @@ router.patch("/password", authorizeUser, async (req, res) => {
 // PATCH /api/users/score
 router.patch("/score", authorizeUser, async (req, res) => {
   const { id } = req.user;
-  console.log(id);
+  const { score } = req.body;
 
-  // todo: for authorized user, update requested field
-  // todo: after successful update, send response 200, { message }
+  if (isNaN(score)) {
+    return res.status(400).json({ error: "Missing required field" });
+  }
 
-  // placeholder response
-  res.send("Endpoint reached PATCH /api/users/score");
+  try {
+    const oldScore = (await knex("users").select("score").where({ id }).first()).score;
+
+    const newTotal = Number(oldScore) + Number(score);
+
+    await knex("users").where({ id }).update({ score: newTotal });
+    res.sendStatus(201);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 // DELETE /api/users/:id
