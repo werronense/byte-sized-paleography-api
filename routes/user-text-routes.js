@@ -4,14 +4,17 @@ const authorizeUser = require("../utils/authorize-user");
 
 // POST /api/user/text
 router.post("/", authorizeUser, async (req, res) => {
-  const { userId, textId } = req.body;
+  const { textId } = req.body;
+  
+  // get user id from req object (set by authorizeUser middleware)
+  const { id } = req.user;
 
-  if (!userId || !textId) {
+  if (!textId) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
   const newRow = {
-    user_id: userId,
+    user_id: id,
     text_id: textId
   }
 
