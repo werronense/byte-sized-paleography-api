@@ -2,6 +2,7 @@ const router = require("express").Router();
 const knex = require("knex")(require("../knexfile"));
 const authorizeUser = require("../utils/authorize-user");
 
+// POST /api/user/text
 router.post("/", authorizeUser, async (req, res) => {
   const { userId, textId } = req.body;
 
