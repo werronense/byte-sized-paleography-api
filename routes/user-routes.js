@@ -1,8 +1,7 @@
 const router = require("express").Router();
+const authorizeUser = require("../utils/authorize-user");
 
-// todo: create middleware function to check user authorization
-
-router.post("/:userId/text/:textId", (req, res) => {
+router.post("/:userId/text/:textId", authorizeUser, (req, res) => {
     // todo: for authorized user, add userId and textId to join table, response 201
     // placeholder response
     res.send("Endpoint reached POST /api/users/:userId/text/:textId");

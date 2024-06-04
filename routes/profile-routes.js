@@ -1,26 +1,6 @@
 const router = require("express").Router();
-const jwt = require("jsonwebtoken");
 const getUserByUsername = require("../utils/get-user-by-username");
-require("dotenv").config();
-
-const { SECRET_KEY } = process.env;
-
-// middelware function to validate token
-const authorizeUser = (req, res, next) => {
-  const { authorization } = req.headers;
-
-  // isolate the token in the string
-  const token = authorization.slice("Bearer ".length);
-
-  // verify token with JWT
-  try {
-    const payload = jwt.verify(token, SECRET_KEY);
-    req.user = payload;
-    next();
-  } catch (err) {
-    res.sendStatus(401);
-  }
-};
+const authorizeUser = require("../utils/authorize-user");
 
 router.get("/", authorizeUser, async (req, res) => {
   try {
