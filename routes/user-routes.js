@@ -32,13 +32,30 @@ router.patch("/username", authorizeUser, async (req, res) => {
 // PATCH /api/users/email
 router.patch("/email", authorizeUser, async (req, res) => {
   const { id } = req.user;
-  console.log(id);
+  const { email } = req.body;
 
-  // todo: for authorized user, update requested field
-  // todo: after successful update, send response 200, { message }
+  // reject requests without required field
+  if (!email) {
+    return res.status(400).json({ error: "Missing required field" });
+  }
+
+  // reject requests to use a non-unique email address
+  const emailTaken = await knex("users").where({ email }).first();
+  if (emailTaken) {
+    return res.status(400).json({ error: "Email already taken" });
+  }
+
+  try {
+    await knex("users").where({ id }).update({ email });
+
+    res.status(200).json({ message: "Email updated!" });
+  } catch (err) {
+    console.error("Internal server error: ", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 
   // placeholder response
-  res.send("Endpoint reached PATCH /api/users/email");
+//   res.send("Endpoint reached PATCH /api/users/email");
 });
 
 // PATCH /api/users/password
