@@ -35,6 +35,7 @@ const validateUserInput = async (req, res, next) => {
   next();
 };
 
+// POST /api/register
 router.post("/", validateUserInput, async (req, res) => {
   bcrypt.hash(req.body.password, 12, async (err, hash) => {
     const newUser = {

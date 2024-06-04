@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const knex = require("knex")(require("../knexfile"));
 
+// GET /api/leaderboard
 router.get("/", async (_req, res) => {
   try {
     // return top 10 users by score

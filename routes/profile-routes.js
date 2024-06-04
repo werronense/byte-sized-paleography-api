@@ -2,6 +2,7 @@ const router = require("express").Router();
 const getUserByUsername = require("../utils/get-user-by-username");
 const authorizeUser = require("../utils/authorize-user");
 
+// GET /api/profile
 router.get("/", authorizeUser, async (req, res) => {
   try {
     // query authenticated user in database

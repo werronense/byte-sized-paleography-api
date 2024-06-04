@@ -37,6 +37,7 @@ const isUserAuthenticated = async (req, res, next) => {
   }
 };
 
+// POST /api/login
 router.post("/", isUserAuthenticated, (req, res) => {
   const { username, id } = req.user;
 
