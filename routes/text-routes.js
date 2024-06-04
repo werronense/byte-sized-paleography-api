@@ -7,7 +7,7 @@ const chooseRandomTextId = (texts) => {
   return texts[Math.floor(Math.random() * texts.length)];
 };
 
-// GET /api/texts
+// GET /api/text
 router.get("/", authorizeUser, async (req, res) => {
   try {
     // filter out texts from users_texts that match user in a knex/sql query
