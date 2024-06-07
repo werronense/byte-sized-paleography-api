@@ -9,7 +9,7 @@ You can play the game by installing both repos locally. Installation instruction
 2. Run `npm install` to install all dependencies
 3. Create a MySQL database on your machine
 4. Create a `.env` using `.env.sample` as a model
-5. Add the local port, local database information, and a secret key for encoding auth tokens to your `.env` file
+5. Add your preferred localhost port, local database information, and a secret key for encoding auth tokens to your `.env` file
 6. Use `npm run db:migrate` to create the database tables
 7. Use `npm run db:seed` to seed the database
 8. Use `npm run start` to start the server
