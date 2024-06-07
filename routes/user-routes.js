@@ -95,7 +95,9 @@ router.patch("/score", authorizeUser, async (req, res) => {
     const newTotal = Number(oldScore) + Number(score);
 
     await knex("users").where({ id }).update({ score: newTotal });
-    res.sendStatus(201);
+    
+    // send the newTotal so the front-end can update the user's score
+    res.status(200).json({ newTotal });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });

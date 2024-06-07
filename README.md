@@ -45,7 +45,7 @@ PATCH /api/users/password
 
 PATCH /api/users/score
 
-- Response: 201
+- Response: 200, `{ newTotal }`
 
 DELETE /api/users/
 
